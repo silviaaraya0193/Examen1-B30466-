@@ -19,17 +19,17 @@ public class Refugiado implements Persona{
     private VistaMigracion vista;
     private int numeroSolicitud;
     private String paisNacimiento;
-    private boolean estatus;
+    private boolean status; 
     private Gestionador<Pais> gestiona;
     
-    public Refugiado(String id, String paisOrigen, String paisProcedencia,String paisNacimiento){
+    public Refugiado(String id, String paisOrigen, String paisProcedencia,String paisNacimiento,boolean status){
         this.id = id;
         this.numDias = 0;
         this.paisOrigen = paisOrigen;
         this.paisProcedencia = paisProcedencia;
         this.numeroSolicitud = numeroSolicitud;
         this.paisNacimiento = paisNacimiento;
-        this.estatus = true;
+        this.status = status;
         this.gestiona = new Gestionador<Pais>();
     }
 
@@ -75,17 +75,16 @@ public class Refugiado implements Persona{
     public void setPaisNacimiento(String paisNacimiento) {
         this.paisNacimiento = paisNacimiento;
     }
-    
-    @Override
-    public boolean ingresoAlPais(String id){
-       if(gestiona.buscarIDPersona(id)){//si el id existe
-           if(vista.disminuirValores() > 0){//si todavia hay campo para solicitudes
-               numDias = 30;
-            return true;//puede ingresar al pais
-           } 
-        }
-        return false;//no puede ingresar
+
+    public boolean isEstatus() {
+        return status;
     }
+
+    public void setEstatus(boolean estatus) {
+        this.status = estatus;
+    }
+    
+   
   
     public static int fibonacci(int posicion) {
         int resultado = 0;
@@ -105,6 +104,11 @@ public class Refugiado implements Persona{
     
     public String getIDPersona(){
     return id;
+    }
+
+    @Override
+    public void setEstado(boolean estado) {
+        setEstatus(estado);
     }
     
 }

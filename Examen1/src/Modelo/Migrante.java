@@ -20,12 +20,12 @@ public class Migrante implements Persona{
     private String paisNacimiento;
     private Gestionador gestion;
     private VistaMigracion vista;
-    public Migrante(String id, String paisOrigen, String paisProcedencia,String paisNacimiento){
+    public Migrante(String id, String paisOrigen, String paisProcedencia,String paisNacimiento,boolean status){
         this.id = id;
         this.numDias = 0;
         this.paisOrigen = paisOrigen;
         this.paisProcedencia = paisProcedencia;
-        this.estatus = true;
+        this.estatus = status;
         this.paisNacimiento = paisNacimiento;
         this.gestion = new Gestionador();
         this.vista = new VistaMigracion();
@@ -73,21 +73,23 @@ public class Migrante implements Persona{
     public void setPaisNacimiento(String paisNacimiento) {
         this.paisNacimiento = paisNacimiento;
     }
- 
-    @Override
-    public boolean ingresoAlPais(String id) {
-       if(gestion.buscarIDPersona(id)){//si el id existe
-           if(vista.disminuirValores()>0){//si todavia hay campo en las solicitudes
-               
-               estatus = true;
-               numDias = 10;
-               return true;
-           }
-       }
-       return false;
+
+    public boolean isEstatus() {
+        return estatus;
     }
+
+    public void setEstatus(boolean estatus) {
+        this.estatus = estatus;
+    }
+ 
+    
    public String getIDPersona(){
      return id;
+    }
+
+    @Override
+    public void setEstado(boolean estado) {
+        setEstatus(estado);
     }
     
 }

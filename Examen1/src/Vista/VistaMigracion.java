@@ -14,6 +14,7 @@ import Modelo.Pais;
 import Modelo.Refugiado;
 import java.util.ArrayList;
 import javax.swing.ButtonGroup;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -24,10 +25,9 @@ public class VistaMigracion extends javax.swing.JFrame {
     /**
      * Creates new form VistaMigracion
      */
-    
     private int solicita;
     private int numero;
-    
+
     public VistaMigracion() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -43,7 +43,7 @@ public class VistaMigracion extends javax.swing.JFrame {
         btn_salir.addActionListener(control);
         btn_simular.addActionListener(control);
         btn_solicitud.addActionListener(control);
-        
+
         this.solicita = 0;
         this.numero = 0;
     }
@@ -59,7 +59,7 @@ public class VistaMigracion extends javax.swing.JFrame {
         } else if (radio_refugiado.isSelected()) {
             if (verificarRefugiado()) {
                 return nombre = "Refugiado";
-            } else{
+            } else {
                 this.setMensajes("No puede viajar a su mismo pais de procedencia");
             }
         }
@@ -103,10 +103,6 @@ public class VistaMigracion extends javax.swing.JFrame {
         this.lbl_mensajes.setText(mensajes);
     }
 
-    public void setUbicaion(String mensajes) {
-        this.lbl_ubicacion.setText(mensajes);
-    }
-
     public void setCambios(String mensajes) {
         this.lbl_mensajes.setText(mensajes);
     }
@@ -125,10 +121,11 @@ public class VistaMigracion extends javax.swing.JFrame {
     public String getAdmitidos() {
         return txt_admitidos.getText();
     }
-    public void setAdmitidos(String nume){
+
+    public void setAdmitidos(String nume) {
         this.txt_admitidos.setText(nume);
     }
-    
+
     public int setSolicitud() {
         return solicita++;
     }
@@ -136,15 +133,33 @@ public class VistaMigracion extends javax.swing.JFrame {
     public String getPaisNacimiento() {
         return txt_nacimiento.getText();
     }
-    public int disminuirValores(){
-        numero = Integer.parseInt(getAdmitidos());
-        numero --;
-        return numero;
+
+    public boolean disminuirValores() {
+        if (Integer.parseInt(getAdmitidos()) > 0) {
+            
+            numero = Integer.parseInt(getAdmitidos());
+            numero--;
+            this.setAdmitidos(Integer.toString(numero));
+            txt_admitidos.setEditable(false);
+            
+            return true;
+        } else {
+            return false;
+        }
     }
     
-    public String getTXTSolicitud(){
+    
+    public String getPaisOrigenCombo(int index){
+        return combo_origen.getItemAt(index);
+    }
+    public String getPaisDestinoCombo(int index){
+        return combo_procedencia.getItemAt(index);
+    }
+    
+    public String getTXTSolicitud() {
         return txt_idSolicitud.getText();
     }
+
     public void set_PaisOrigenCombo(Gestionador<Pais> gestionPais) {
         this.combo_origen.removeAllItems();
         //System.out.println("informaionc del paisorigen: "+gestionPais.getPaisO().getPaisOrigen());
@@ -177,7 +192,13 @@ public class VistaMigracion extends javax.swing.JFrame {
     public boolean getZonaIndigena() {
         return this.radio_zonaIndigena.isSelected();
     }
-
+    public String getTXTCambio(){
+        return txt_intercambios.getText();
+    }
+     public void llenarTabla(String listaData[][],String[] etiquetas){
+        this.jTable.setModel(new DefaultTableModel(listaData,etiquetas));
+        jScrollPane1.setViewportView(jTable);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -208,7 +229,6 @@ public class VistaMigracion extends javax.swing.JFrame {
         radio_zonaIndigena = new javax.swing.JRadioButton();
         jLabel7 = new javax.swing.JLabel();
         txt_id = new javax.swing.JTextField();
-        lbl_ubicacion = new javax.swing.JLabel();
         lbl_cambios = new javax.swing.JLabel();
         btn_solicitud = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
@@ -218,6 +238,9 @@ public class VistaMigracion extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         txt_idSolicitud = new javax.swing.JTextField();
+        txt_intercambios = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -258,15 +281,13 @@ public class VistaMigracion extends javax.swing.JFrame {
 
         combo_procedencia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jLabel5.setText("Seleccione su pais de procedencia");
+        jLabel5.setText("Seleccione su pais actual");
 
         jLabel6.setText("Seleccione su pais de destino");
 
         radio_zonaIndigena.setText("Zona Indigena");
 
         jLabel7.setText("ID:");
-
-        lbl_ubicacion.setText("Ubicacion actual de la persona");
 
         lbl_cambios.setText("Numero de intercambios");
 
@@ -283,62 +304,49 @@ public class VistaMigracion extends javax.swing.JFrame {
         jLabel11.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel11.setText("ID:");
 
+        jTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "ID", "Pais Origen", "Pais Destino"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addGap(46, 46, 46)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(radio_indigena)
+                    .addComponent(radio_ciudadano)
+                    .addComponent(radio_migrante)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(radio_indigena)
-                                    .addComponent(radio_ciudadano)
-                                    .addComponent(radio_migrante)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(90, 90, 90)
-                                        .addComponent(jLabel2))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(37, 37, 37)
-                                        .addComponent(jLabel11)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(txt_idSolicitud, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(58, 58, 58)
-                                        .addComponent(btn_solicitud)))
-                                .addGap(0, 71, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(50, 50, 50)
-                                .addComponent(combo_procedencia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(combo_origen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(83, 83, 83)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(radio_zonaIndigena)
-                            .addComponent(lbl_ubicacion)
-                            .addComponent(lbl_cambios))
-                        .addGap(214, 214, 214))
+                        .addGap(90, 90, 90)
+                        .addComponent(jLabel2))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(radio_refugiado)
+                                .addGap(103, 103, 103)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel9))
+                                .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(radio_refugiado)
-                                        .addGap(103, 103, 103)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel4)
-                                            .addComponent(jLabel3)
-                                            .addComponent(jLabel9))
-                                        .addGap(18, 18, 18)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(txt_id, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
-                                            .addComponent(txt_nacimiento, javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(txt_origen, javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(txt_procedencia, javax.swing.GroupLayout.Alignment.TRAILING)))
-                                    .addComponent(jLabel10))
-                                .addGap(15, 15, 15))
+                                    .addComponent(txt_id, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE)
+                                    .addComponent(txt_nacimiento, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(txt_origen, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(txt_procedencia, javax.swing.GroupLayout.Alignment.TRAILING)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(160, 160, 160)
                                 .addComponent(jLabel1))
@@ -351,15 +359,46 @@ public class VistaMigracion extends javax.swing.JFrame {
                                 .addComponent(lbl_mensajes, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(50, 50, 50)
-                                .addComponent(btn_agregar)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btn_salir)
-                        .addGap(64, 64, 64))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addGap(68, 68, 68)
-                        .addComponent(jLabel6)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(btn_agregar)))))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(37, 37, 37)
+                                .addComponent(jLabel11)
+                                .addGap(18, 18, 18)
+                                .addComponent(txt_idSolicitud, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(58, 58, 58)
+                                .addComponent(btn_solicitud))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addGap(95, 95, 95)
+                                .addComponent(jLabel6))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(50, 50, 50)
+                                .addComponent(combo_procedencia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(combo_origen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(50, 50, 50)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(43, 43, 43)
+                                .addComponent(radio_zonaIndigena))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(81, 81, 81)
+                                .addComponent(btn_simular))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel10)
+                        .addGap(64, 64, 64)
+                        .addComponent(lbl_cambios)
+                        .addGap(18, 18, 18)
+                        .addComponent(txt_intercambios, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(56, 56, 56)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(24, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -367,21 +406,21 @@ public class VistaMigracion extends javax.swing.JFrame {
                         .addComponent(jLabel8)
                         .addGap(18, 18, 18)
                         .addComponent(txt_admitidos, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(108, 108, 108))
+                        .addGap(185, 185, 185))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btn_simular)
-                        .addGap(272, 272, 272))))
+                        .addComponent(btn_salir)
+                        .addGap(35, 35, 35))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(13, 13, 13)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel8)
                     .addComponent(txt_admitidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(9, 9, 9)
+                .addGap(7, 7, 7)
                 .addComponent(jLabel2)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -421,36 +460,34 @@ public class VistaMigracion extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(15, 15, 15)
                                 .addComponent(btn_agregar)))))
-                .addGap(58, 58, 58)
-                .addComponent(jLabel10)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel11)
-                    .addComponent(txt_idSolicitud, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_solicitud))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addGap(37, 37, 37)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btn_salir)
                     .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel10)
+                            .addComponent(lbl_cambios)
+                            .addComponent(txt_intercambios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel11)
+                            .addComponent(txt_idSolicitud, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btn_solicitud))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(14, 14, 14)
+                            .addComponent(combo_procedencia, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel5)
                                     .addComponent(jLabel6)
-                                    .addComponent(radio_zonaIndigena)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(59, 59, 59)
+                                    .addComponent(radio_zonaIndigena))
+                                .addGap(35, 35, 35)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(combo_procedencia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(combo_origen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(2, 2, 2)
-                        .addComponent(lbl_cambios)
-                        .addGap(18, 18, 18)
-                        .addComponent(lbl_ubicacion)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
-                .addComponent(btn_simular)
-                .addGap(37, 37, 37))
+                                    .addComponent(btn_simular)
+                                    .addComponent(combo_origen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(btn_salir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -513,9 +550,10 @@ public class VistaMigracion extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable;
     private javax.swing.JLabel lbl_cambios;
     private javax.swing.JLabel lbl_mensajes;
-    private javax.swing.JLabel lbl_ubicacion;
     private javax.swing.JRadioButton radio_ciudadano;
     private javax.swing.JRadioButton radio_indigena;
     private javax.swing.JRadioButton radio_migrante;
@@ -524,6 +562,7 @@ public class VistaMigracion extends javax.swing.JFrame {
     private javax.swing.JTextField txt_admitidos;
     private javax.swing.JTextField txt_id;
     private javax.swing.JTextField txt_idSolicitud;
+    private javax.swing.JTextField txt_intercambios;
     private javax.swing.JTextField txt_nacimiento;
     private javax.swing.JTextField txt_origen;
     private javax.swing.JTextField txt_procedencia;

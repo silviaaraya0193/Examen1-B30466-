@@ -19,15 +19,17 @@ public class Indigena implements Persona {
     private String paisProcedencia;
     private VistaMigracion vista;
     private String paisNacimiento;
+            private boolean status;
     private Gestionador gestiona;
 
-    public Indigena(String id, String paisOrigen, String paisProcedencia, String paisNacimiento) {
+    public Indigena(String id, String paisOrigen, String paisProcedencia, String paisNacimiento,boolean status) {
         this.id = id;
         this.numDias = 0;
         this.paisOrigen = paisOrigen;
         this.paisProcedencia = paisProcedencia;
         this.paisNacimiento = paisNacimiento;
         this.gestiona = new Gestionador();
+        this.status=status;
     }
 
     public Indigena() {
@@ -73,20 +75,20 @@ public class Indigena implements Persona {
         this.paisNacimiento = paisNacimiento;
     }
 
-    @Override
-    public boolean ingresoAlPais(String id) {
-        if (gestiona.buscarIDPersona(id)) {//di el id existe
-            if (vista.disminuirValores() > 0) {
-                numDias = -1;
-                return true;
-            }
-        }
-        return false;
+    public void setStatus(boolean status) {
+        this.status = status;
     }
+
+    
     
     public String getIDPersona(){
     
         return id;
+    }
+
+    @Override
+    public void setEstado(boolean estado) {
+        setStatus(estado);
     }
 
 }

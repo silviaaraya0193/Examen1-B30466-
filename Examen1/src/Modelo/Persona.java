@@ -10,6 +10,8 @@ package Modelo;
  * @author Silvia Araya J
  */
 public interface Persona {
-    boolean ingresoAlPais(String id);
+    void setEstado(boolean estado);
     String getIDPersona();
+    
+    
 }

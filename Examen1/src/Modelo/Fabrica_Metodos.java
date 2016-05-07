@@ -16,19 +16,18 @@ public class Fabrica_Metodos {
         
         switch(nombre){
             case "Ciudadano":
-                persona = new Ciudadano(id, paisOrigen, paisProcedencia,paisNacimiento);
+                persona = new Ciudadano(id, paisOrigen, paisProcedencia,paisNacimiento,false);
                 break;
             case "Indigena":
-                persona = new Indigena(id,paisOrigen, paisProcedencia,paisNacimiento);
+                persona = new Indigena(id,paisOrigen, paisProcedencia,paisNacimiento,false);
                 break;
             case "Migrantes":
-                persona = new Migrante(id,paisOrigen, paisProcedencia,paisNacimiento);
+                persona = new Migrante(id,paisOrigen, paisProcedencia,paisNacimiento,false);
                 break;
             case "Refugiado":
-                persona = new Refugiado(id,paisOrigen, paisProcedencia,paisNacimiento);
+                persona = new Refugiado(id,paisOrigen, paisProcedencia,paisNacimiento,false);
                 break;
         }
-        System.out.println("La fabrica me da por la nuca con: "+persona.toString());
         return persona;
     }
 }

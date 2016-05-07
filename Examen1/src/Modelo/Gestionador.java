@@ -24,7 +24,6 @@ public class Gestionador<T> {
     public void guardarPersona(String nombre, String id,  String paisOrigen, String paisProcedencia,String paisNacimiento) {
        
         arrayT.add((T) fabrica.getPersona(nombre, id,paisOrigen, paisProcedencia,paisNacimiento));
-        System.out.println(arrayT.get(0));
         System.out.println("agrego personas");
     }
 
@@ -43,16 +42,7 @@ public class Gestionador<T> {
         }
         return aux;
     }
-   /* public boolean buscarid(String id){
-        for(int i=0;i<arrayT.size();i++){
-           
-            if(arrayT.get(i).g.equals(id)){
-                System.out.println("Existe el ID");
-                return true;//el id existe
-            }
-        }
-        return false;//el id no existe
-    }*/
+    
     public Pais getPaisO(){
         Pais pais = null;
         for(int i =0; i<arrayT.size();i++){
@@ -81,18 +71,5 @@ public class Gestionador<T> {
         }
     }
    
-    public boolean buscarIDPersona(String id){
-        System.out.println(arregloPersona().size());
-        
-        
-        
-        for(int index=0;index<arregloPersona().size();index++){ 
-            System.out.print("Entra en el for de buscar persona");
-            
-            if(arregloPersona().get(index).getIDPersona().equals(id)){
-                return true;
-            }
-        }
-        return false;
-    }    
+   
 }

@@ -20,8 +20,9 @@ public class Ciudadano implements Persona {
     private String paisNacimiento;
     private Gestionador gestiona;
     private VistaMigracion vista;
+    private boolean status;
     
-    public Ciudadano(String id,String paisOrigen, String paisProcedencia,String paisNacimiento) {
+    public Ciudadano(String id,String paisOrigen, String paisProcedencia,String paisNacimiento,boolean status) {
         this.id = id;
         this.numDias = 0;
         this.paisOrigen = paisOrigen;
@@ -29,6 +30,7 @@ public class Ciudadano implements Persona {
         this.paisNacimiento = paisNacimiento;
         this.gestiona = new Gestionador();
         this.vista = new VistaMigracion();
+        this.status=status;
     }
 
     public Ciudadano() {
@@ -73,22 +75,22 @@ public class Ciudadano implements Persona {
     public void setPaisNacimiento(String paisNacimiento) {
         this.paisNacimiento = paisNacimiento;
     }
-    
-    @Override
-    public boolean ingresoAlPais(String id) {
-        if(gestiona.buscarIDPersona(id)){ 
-            
-            if(vista.disminuirValores()>0){
-                numDias = 30;
-                System.out.println("Ciudadano Aceptado");
-                return true;
-            }
-        }
-        System.out.println("Ciudadano Negado");
-        return false;
+
+    public boolean isStatus() {
+        return status;
     }
 
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+    
+    
     public String getIDPersona(){
     return id;
+    }
+
+    @Override
+    public void setEstado(boolean estado) {
+        setStatus(estado);
     }
 }
